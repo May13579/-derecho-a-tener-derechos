@@ -4,11 +4,11 @@ import streamlit as st
 # -------------------------------------------------- 
 st.set_page_config( 
 page_title="Derecho a tener derechos", 
-page_icon=":)
-:):)
-:):)
-:):)
-:)", 
+page_icon="a
+aa
+aa
+aa
+a", 
 layout="wide", 
 initial_sidebar_state="collapsed" 
 ) 
@@ -20,13 +20,13 @@ initial_sidebar_state="collapsed"
 DERECHOS = [ 
 { 
 "nombre": "Educación", 
-"icono": ":)
-:):)
-:):)
-:):)
-:):)
-:):)
-:)", 
+"icono": "a
+aa
+aa
+aa
+aa
+aa
+a", 
 "color": "#E8F1FF", 
 "acento": "#2457A7", 
 "resumen": ( 
@@ -51,9 +51,9 @@ DERECHOS = [
 }, 
 { 
 "nombre": "Salud", 
-"icono": ":)
-:):)
-:)", 
+"icono": "a
+aa
+a", 
 "color": "#FFF0F1", 
 "acento": "#A83246", 
 "resumen": ( 
@@ -78,10 +78,10 @@ DERECHOS = [
 }, 
 { 
 "nombre": "Vivienda", 
-"icono": ":)
-:):)
-:):)
-:):)", 
+"icono": "a
+aa
+aa
+aa", 
 "color": "#FFF4E6", 
 "acento": "#9B5700", 
 "resumen": ( 
@@ -105,10 +105,10 @@ DERECHOS = [
 }, 
 { 
 "nombre": "Trabajo", 
-"icono": ":)
-:):)
-:):)
-:):)", 
+"icono": "a
+aa
+aa
+aa", 
 "color": "#EDF8F0", 
 "acento": "#27653A", 
 "resumen": ( 
@@ -132,8 +132,8 @@ DERECHOS = [
 }, 
 { 
 "nombre": "Acceso a la información", 
-"icono": ":)
-:):)", 
+"icono": "a
+aa", 
 "color": "#F1EEFF", 
 "acento": "#584199", 
 "resumen": ( 
