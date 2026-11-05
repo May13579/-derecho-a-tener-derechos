@@ -1,11 +1,22 @@
 import streamlit as st
 from pathlib import Path
+import base64
 
 def render_navbar():
-    # Ruta del logo (ajusta el nombre/archivo según corresponda)
-    logo_path = Path("assets/test.jpeg")
-    logo_src = logo_path if logo_path.exists() else "https://via.placeholder.com/40"
+    # 1. Cargar y codificar la imagen
+    logo_path = Path("assets/test.jpeg")  # 👈 Asegúrate que tu imagen esté aquí
+    logo_html = ""
+    
+    if logo_path.exists():
+        with open(logo_path, "rb") as f:
+            encoded_logo = base64.b64encode(f.read()).decode("utf-8")
+        # Creamos la etiqueta img con la imagen incrustada
+        logo_html = f'<img src="data:image/png;base64,{encoded_logo}" class="logo" alt="Logo" />'
+    else:
+        # Si no encuentra la imagen, muestra un texto o ícono por defecto
+        logo_html = '<div class="logo-fallback">⚖️</div>'
 
+    # 2. Inyectar el HTML y CSS
     st.markdown(f"""
     <style>
     /* Navbar superior fijo */
@@ -24,62 +35,36 @@ def render_navbar():
     }}
 
     /* Logo esquina superior izquierda */
-    .top-navbar .logo {{
+    .logo {{
         height: 44px;
         width: auto;
         border-radius: 8px;
         margin-right: 12px;
     }}
+    
+    /* Fallback si no hay imagen */
+    .logo-fallback {{
+        font-size: 1.8rem;
+        margin-right: 12px;
+    }}
 
     /* Título junto al logo */
-    .top-navbar .brand {{
+    .brand {{
         color: #ffffff;
         font-size: 1.05rem;
         font-weight: 700;
         margin-right: auto;
         letter-spacing: 0.02em;
     }}
-
-    /* Contenedor de botones */
-    .nav-buttons {{
-        display: flex;
-        gap: 4px;
-        align-items: center;
-    }}
-
-    /* Botones del navbar */
-    .nav-btn {{
-        background: transparent !important;
-        color: #b0b0b0 !important;
-        border: none !important;
-        font-size: 0.72rem !important;
-        font-weight: 600 !important;
-        padding: 6px 10px !important;
-        border-radius: 8px !important;
-        min-height: auto !important;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }}
-    .nav-btn:hover {{
-        background: #2a2a2a !important;
-        color: #ffffff !important;
-    }}
-    .nav-btn.active {{
-        background: #1a1a1a !important;
-        color: #ffffff !important;
-        border: 1px solid #444 !important;
-    }}
     </style>
 
     <div class="top-navbar">
-        <img src="{logo_src}" class="logo" alt="Logo" />
+        {logo_html}
         <div class="brand">Derecho a tener derechos</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Botones de navegación (debajo del HTML del navbar)
+    # 3. Botones de navegación
     cols = st.columns(5)
     items = [
         ("🏠", "Home", "home"),
