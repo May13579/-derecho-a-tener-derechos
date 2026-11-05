@@ -3,20 +3,38 @@ from pathlib import Path
 import base64
 
 def render_navbar():
-    # 1. Cargar y codificar la imagen
-    logo_path = Path("assets/test.jpeg")  # 👈 Asegúrate que tu imagen esté aquí
+    # 1. Calcular la ruta absoluta basada en la ubicación de ESTE archivo
+    # Esto evita que falle si ejecutas streamlit desde otra carpeta
+    current_dir = Path(__file__).parent.resolve()
+    project_root = current_dir.parent
+    logo_path = project_root / "assets" / "logo.png"
+
     logo_html = ""
     
+    # 2. Cargar y codificar la imagen
     if logo_path.exists():
-        with open(logo_path, "rb") as f:
-            encoded_logo = base64.b64encode(f.read()).decode("utf-8")
-        # Creamos la etiqueta img con la imagen incrustada
-        logo_html = f'<img src="data:image/png;base64,{encoded_logo}" class="logo" alt="Logo" />'
+        try:
+            with open(logo_path, "rb") as f:
+                encoded_logo = base64.b64encode(f.read()).decode("utf-8")
+            
+            # Detectar la extensión para usar el MIME type correcto
+            mime_type = "image/png"
+            if logo_path.suffix.lower() in [".jpg", ".jpeg"]:
+                mime_type = "image/jpeg"
+            elif logo_path.suffix.lower() == ".svg":
+                mime_type = "image/svg+xml"
+                
+            logo_html = f'<img src="data:{mime_type};base64,{encoded_logo}" class="logo" alt="Logo" />'
+        except Exception as e:
+            # Si hay un error al leer, muestra el ícono de respaldo
+            logo_html = '<div class="logo-fallback">⚖️</div>'
     else:
-        # Si no encuentra la imagen, muestra un texto o ícono por defecto
+        # TEMPORAL: Descomenta la siguiente línea para ver en la app 
+        # en qué ruta exacta está buscando el logo.
+        # st.warning(f"⚠️ Logo no encontrado en: {logo_path}")
         logo_html = '<div class="logo-fallback">⚖️</div>'
 
-    # 2. Inyectar el HTML y CSS
+    # 3. Inyectar el HTML y CSS
     st.markdown(f"""
     <style>
     /* Navbar superior fijo */
@@ -40,6 +58,7 @@ def render_navbar():
         width: auto;
         border-radius: 8px;
         margin-right: 12px;
+        object-fit: contain;
     }}
     
     /* Fallback si no hay imagen */
@@ -64,7 +83,7 @@ def render_navbar():
     </div>
     """, unsafe_allow_html=True)
 
-    # 3. Botones de navegación
+    # 4. Botones de navegación
     cols = st.columns(5)
     items = [
         ("🏠", "Home", "home"),
