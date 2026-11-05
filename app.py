@@ -18,8 +18,7 @@ if "current_page" not in st.session_state:
     st.session_state.current_page = "home"
 
 # Agregar padding inferior para que el navbar no tape contenido
-st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True)
-
+st.markdown("<div style='height: 110px;'></div>", unsafe_allow_html=True)
 # Router
 page = st.session_state.current_page
 if page == "home":
