@@ -3,7 +3,7 @@ from pathlib import Path
 
 def render_navbar():
     # Ruta del logo (ajusta el nombre/archivo según corresponda)
-    logo_path = Path("assets/logo.png")
+    logo_path = Path("assets/test.jpeg")
     logo_src = logo_path if logo_path.exists() else "https://via.placeholder.com/40"
 
     st.markdown(f"""
