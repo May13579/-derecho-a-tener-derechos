@@ -7,7 +7,7 @@ def render_navbar():
     # Esto evita que falle si ejecutas streamlit desde otra carpeta
     current_dir = Path(__file__).parent.resolve()
     project_root = current_dir.parent
-    logo_path = project_root / "assets" / "logo.png"
+    logo_path = project_root / "assets" / "test.jpeg"
 
     logo_html = ""
     
