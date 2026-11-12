@@ -3,7 +3,7 @@ from pathlib import Path
 import base64
 
 def render_navbar():
-    # 1. Calcular la ruta absoluta (corregido)
+    # 1. Calcular la ruta absoluta
     current_dir = Path(__file__).parent.resolve()
     project_root = current_dir.parent
     logo_path = project_root / "assets" / "test.jpeg"
@@ -24,94 +24,119 @@ def render_navbar():
         except Exception:
             pass
 
-    # 3. CSS para fijar el navbar negro arriba y estilizar los botones
+    # 3. CSS para navbar con menú hamburguesa
     st.markdown("""
     <style>
-    /* Fijar el bloque de columnas de Streamlit como navbar superior */
-    div[data-testid="stHorizontalBlock"] {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        background-color: #000000 !important;
-        padding: 8px 16px !important;
-        z-index: 9999 !important;
-        border-bottom: 1px solid #222;
+    /* Navbar superior fijo */
+    .navbar-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #000000;
+        z-index: 9999;
         box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
-    /* Alinear el contenido de las columnas */
-    div[data-testid="stColumn"] {
+    .navbar-content {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        height: 64px;
     }
 
-    /* Empujar el contenido principal hacia abajo para que no lo tape el navbar */
-    .block-container {
-        padding-top: 75px !important;
+    /* Logo */
+    .navbar-logo {
+        height: 38px;
+        border-radius: 6px;
     }
 
-    /* Estilo de los botones para que se integren en el fondo negro */
-    div[data-testid="stButton"] button {
-        background: transparent !important;
-        color: #d0d0d0 !important;
-        border: 1px solid #333333 !important;
-        border-radius: 8px !important;
-        font-size: 0.8rem !important;
-        font-weight: 600 !important;
-        padding: 6px 10px !important;
+    .logo-fallback {
+        font-size: 1.8rem;
+    }
+
+    /* Menú desplegable */
+    .dropdown-menu {
+        position: absolute;
+        top: 64px;
+        right: 20px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        padding: 10px 0;
+        min-width: 200px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        display: none;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+    .menu-item-btn {
+        display: block;
+        width: 100%;
+        padding: 12px 20px;
+        background: transparent;
+        border: none;
+        color: #d0d0d0;
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
         transition: all 0.2s ease;
     }
-    
-    div[data-testid="stButton"] button:hover {
-        background: #222222 !important;
-        color: #ffffff !important;
-        border-color: #555555 !important;
+
+    .menu-item-btn:hover {
+        background-color: #2a2a2a;
+        color: #ffffff;
     }
 
-    /* Botón activo (página actual) */
-    div[data-testid="stButton"] button[kind="primary"] {
-        background: #ffffff !important;
-        color: #000000 !important;
-        border-color: #ffffff !important;
+    .menu-item-btn.active {
+        background-color: #333333;
+        color: #ffffff;
+        border-left: 3px solid #ffffff;
+    }
+
+    /* Empujar el contenido hacia abajo */
+    .block-container {
+        padding-top: 85px !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # 4. Crear las columnas que formarán el navbar
-    # La primera columna es para el logo, las demás para los botones
-    cols = st.columns([1.2, 1, 1, 1, 1, 1])
+    # 4. Crear el navbar con Streamlit
+    col_logo, col_menu = st.columns([3, 1])
     
-    with cols[0]:
+    with col_logo:
         if logo_src:
-            st.markdown(
-                f'<img src="{logo_src}" style="height: 38px; border-radius: 6px; margin-left: 8px;">', 
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<img src="{logo_src}" class="navbar-logo" style="height: 38px; border-radius: 6px;">', unsafe_allow_html=True)
         else:
-            st.markdown('<div style="font-size: 1.5rem; margin-left: 8px;">⚖️</div>', unsafe_allow_html=True)
-
-    # 5. Botones de navegación
-    items = [
-        ("Home", "home"),
-        ("Derechos", "seleccion"),
-        ("Actividad", "actividad"),
-        ("CPI", "cpi"),
-        ("Config", "configuracion"),
-    ]
-
-    for col, (label, page) in zip(cols[1:], items):
-        with col:
-            is_active = st.session_state.get("current_page") == page
-            # Si es la página activa, usamos type="primary" para que el CSS la destaque
-            btn_type = "primary" if is_active else "secondary"
+            st.markdown('<div class="logo-fallback">⚖️</div>', unsafe_allow_html=True)
+    
+    with col_menu:
+        # Botón hamburguesa
+        if st.button("☰", key="menu_toggle", help="Menú"):
+            st.session_state.show_menu = not st.session_state.get("show_menu", False)
+            st.rerun()
+        
+        # Menú desplegable
+        if st.session_state.get("show_menu", False):
+            items = [
+                ("Home", "home"),
+                ("Derechos", "seleccion"),
+                ("Actividad", "actividad"),
+                ("CPI", "cpi"),
+                ("Config", "configuracion"),
+            ]
             
-            if st.button(
-                f"{label}", 
-                key=f"nav_{page}", 
-                use_container_width=True,
-                type=btn_type
-            ):
-                st.session_state.current_page = page
-                st.rerun()
+            current_page = st.session_state.get("current_page", "home")
+            
+            for label, page in items:
+                is_active = current_page == page
+                btn_class = "menu-item-btn active" if is_active else "menu-item-btn"
+                
+                if st.button(label, key=f"menu_{page}", use_container_width=True):
+                    st.session_state.current_page = page
+                    st.session_state.show_menu = False
+                    st.rerun()
