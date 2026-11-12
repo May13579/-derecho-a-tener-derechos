@@ -24,6 +24,8 @@ def show():
             display: flex;
             justify-content: center;
             margin-top: 15px;
+            display: flex; 
+            justify-content: center;
         }
 
         .st-key-btn_conocelos button {
@@ -50,7 +52,7 @@ def show():
         st.markdown(
             f"""
             <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <img src="data:image/jpeg;base64,{test_img_b64}" style="max-width: 100%; width: 220px; border-radius: 12px;">
+                <img src="data:image/jpeg;base64,{test_img_b64}" style="max-width: 100%; width: 240px; border-radius: 12px;">
             </div>
             """,
             unsafe_allow_html=True
@@ -73,7 +75,7 @@ def show():
 
     # 5. Texto centrado
     st.markdown(
-        '<p style="text-align: center; font-size: 1.25rem; font-weight: 500; color: #111111; margin-bottom: 10px;">son tuyos. Defiéndelos</p>',
+        '<p style="text-align: center; font-size: 2.25rem; font-weight: 500; color: #111111; margin-bottom: 10px;">son tuyos. Defiéndelos</p>',
         unsafe_allow_html=True
     )
 
