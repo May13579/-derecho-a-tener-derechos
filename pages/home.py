@@ -20,14 +20,20 @@ def show():
     # 2. CSS para estilizar y centrar el botón rosa (#FA9ACE)
     st.html("""
     <style>
-        .st-key-btn_conocelos {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-            display: flex; 
-            justify-content: center;
+        /* Centra la caja externa y el contenedor interno del botón */
+        .st-key-btn_conocelos,
+        .st-key-btn_conocelos div[data-testid="stButton"] {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
         }
-
+    
+        .st-key-btn_conocelos {
+            margin-top: 15px;
+        }
+    
+        /* Estilo del botón rosa #FA9ACE */
         .st-key-btn_conocelos button {
             background-color: #FA9ACE !important;
             color: #111111 !important;
@@ -40,12 +46,13 @@ def show():
             transition: transform 0.2s ease, filter 0.2s ease;
             margin: 0 auto !important;
         }
-
+    
         .st-key-btn_conocelos button:hover {
             filter: brightness(0.95);
             transform: translateY(-2px);
         }
     </style>
+
     """)
 
     # 3. Primera imagen: test.jpeg (centrada)
