@@ -26,7 +26,7 @@ def show():
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
-            width: 100% !important;
+            width: 20% !important;
         }
     
         .st-key-btn_conocelos {
