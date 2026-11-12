@@ -101,14 +101,14 @@ def render_navbar():
         ("Config", "configuracion"),
     ]
 
-    for col, (icon, label, page) in zip(cols[1:], items):
+    for col, (label, page) in zip(cols[1:], items):
         with col:
             is_active = st.session_state.get("current_page") == page
             # Si es la página activa, usamos type="primary" para que el CSS la destaque
             btn_type = "primary" if is_active else "secondary"
             
             if st.button(
-                f"{icon} {label}", 
+                f"{label}", 
                 key=f"nav_{page}", 
                 use_container_width=True,
                 type=btn_type
