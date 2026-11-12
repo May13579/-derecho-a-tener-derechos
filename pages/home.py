@@ -20,38 +20,55 @@ def show():
     # 2. CSS para estilizar y centrar el botón rosa (#FA9ACE)
     st.html("""
     <style>
-        /* Centra la caja externa y el contenedor interno del botón */
-        .st-key-btn_conocelos,
-        .st-key-btn_conocelos div[data-testid="stButton"] {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            width: 100% !important;
-        }
-    
-        .st-key-btn_conocelos {
-            margin-top: 15px;
-        }
-    
-        /* Estilo del botón rosa #FA9ACE */
+    /* Centra la caja externa y el contenedor interno del botón */
+    .st-key-btn_conocelos,
+    .st-key-btn_conocelos div[data-testid="stButton"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    .st-key-btn_conocelos {
+        margin-top: 15px;
+    }
+
+    /* Estilo del botón rosa #FA9ACE protegido contra deformaciones */
+    .st-key-btn_conocelos button {
+        background-color: #FA9ACE !important;
+        color: #111111 !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 10px 28px !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, filter 0.2s ease;
+        margin: 0 auto !important;
+        
+        /* Evita que se estire, encoja o parta en teléfonos */
+        width: auto !important;
+        min-width: fit-content !important;
+        max-width: max-content !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        line-height: 1.2 !important;
+    }
+
+    .st-key-btn_conocelos button:hover {
+        filter: brightness(0.95);
+        transform: translateY(-2px);
+    }
+
+    /* Ajuste sutil para pantallas de teléfono muy estrechas */
+    @media (max-width: 768px) {
         .st-key-btn_conocelos button {
-            background-color: #FA9ACE !important;
-            color: #111111 !important;
-            border: none !important;
-            border-radius: 10px !important;
-            padding: 10px 28px !important;
-            font-size: 1rem !important;
-            font-weight: 700 !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s ease, filter 0.2s ease;
-            margin: 0 auto !important;
+            padding: 10px 24px !important;
+            font-size: 0.95rem !important;
         }
-    
-        .st-key-btn_conocelos button:hover {
-            filter: brightness(0.95);
-            transform: translateY(-2px);
-        }
+    }
     </style>
+
 
     """)
 
