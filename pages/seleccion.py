@@ -63,9 +63,6 @@ def show():
     </style>
     """)
 
-    st.markdown('<h1 class="titulo-seleccion">📋 Selección de Derechos</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="subtitulo-seleccion">Elige uno de los 7 derechos para explorar.</p>', unsafe_allow_html=True)
-
     # Listado exacto de los 7 derechos
     lista_derechos = [
         "Derecho a tener derechos",
