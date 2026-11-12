@@ -1,1 +1,34 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #000000;
+  text-align: left;
+}
 
+.navbar__inner {
+  padding: 1.6% 1.6% 1.6% 0.8%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__brand {
+  display: flex;
+  flex-direction: column;
+  padding: 1.6% 1.6% 1.6% 0.8%;
+  gap: 0.5rem;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.navbar-logo {
+  height: 100%;          
+  width: auto;           
+  max-width: 180px;      
+  object-fit: contain;  
+  margin-right: 8px;  
+}
