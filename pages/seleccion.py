@@ -39,7 +39,7 @@ def show():
         /* Tipografía monoespaciada blanca dentro del botón */
         .st-key-lista_derechos button p {
             font-family: 'Space Mono', 'Courier New', monospace !important;
-            font-size: 1.05rem !important;
+            font-size: 1.35rem !important;
             font-weight: 700 !important;
             color: #ffffff !important;
             line-height: 1.3 !important;
