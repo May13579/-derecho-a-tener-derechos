@@ -94,11 +94,11 @@ def render_navbar():
 
     # 5. Botones de navegación
     items = [
-        ("🏠", "Home", "home"),
-        ("📋", "Derechos", "seleccion"),
-        ("🎯", "Actividad", "actividad"),
-        ("📊", "CPI", "cpi"),
-        ("⚙️", "Config", "configuracion"),
+        ("Home", "home"),
+        ("Derechos", "seleccion"),
+        ("Actividad", "actividad"),
+        ("CPI", "cpi"),
+        ("Config", "configuracion"),
     ]
 
     for col, (icon, label, page) in zip(cols[1:], items):
