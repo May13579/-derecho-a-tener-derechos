@@ -23,7 +23,6 @@ st.html("""
 </style>
 """)
 
-st.title("Mi aplicación sin barra superior")
 
 #Check
 
