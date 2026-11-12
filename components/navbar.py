@@ -3,6 +3,19 @@ from pathlib import Path
 import base64
 
 def render_navbar():
+    # 0. Control del historial de navegación
+    if "page_history" not in st.session_state:
+        st.session_state.page_history = []
+    
+    current = st.session_state.get("current_page", "home")
+    if "last_tracked_page" not in st.session_state:
+        st.session_state.last_tracked_page = current
+
+    # Si el usuario cambió de página desde otro botón (ej. "Conócelos"), guarda la anterior
+    if current != st.session_state.last_tracked_page:
+        st.session_state.page_history.append(st.session_state.last_tracked_page)
+        st.session_state.last_tracked_page = current
+
     # 1. Calcular la ruta absoluta del logo
     current_dir = Path(__file__).parent.resolve()
     project_root = current_dir.parent
@@ -51,7 +64,7 @@ def render_navbar():
             gap: 8px !important;
         }
 
-        /* Centra verticalmente todos los contenedores internos de ambas columnas */
+        /* Centra verticalmente todos los contenedores internos */
         .st-key-mi_navbar div[data-testid="stColumn"] > div,
         .st-key-mi_navbar div[data-testid="stVerticalBlock"],
         .st-key-mi_navbar div[data-testid="stElementContainer"],
@@ -64,7 +77,7 @@ def render_navbar():
         }
 
         /* Columna izquierda (Logo) */
-        .st-key-mi_navbar div[data-testid="stColumn"]:first-child {
+        .st-key-mi_navbar > div > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:first-child {
             width: auto !important;
             min-width: fit-content !important;
             flex: 0 1 auto !important;
@@ -82,11 +95,11 @@ def render_navbar():
             object-fit: contain;
         }
 
-        /* Columna derecha (Menú): empuja el botón al extremo derecho */
-        .st-key-mi_navbar div[data-testid="stColumn"]:last-child,
-        .st-key-mi_navbar div[data-testid="stColumn"]:last-child > div,
-        .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"],
-        .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
+        /* Columna derecha (Flecha + Menú): empuja ambos botones al extremo derecho */
+        .st-key-mi_navbar > div > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child,
+        .st-key-mi_navbar > div > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child > div,
+        .st-key-mi_navbar > div > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"],
+        .st-key-mi_navbar > div > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
             width: auto !important;
             min-width: fit-content !important;
             flex: 0 1 auto !important;
@@ -97,9 +110,23 @@ def render_navbar():
             padding-right: 0 !important;
         }
 
-        /* Estilo del botón del menú con la misma altura que el logo (38px) */
-        .st-key-mi_navbar div[data-testid="stPopover"] button {
+        /* Columnas internas de acciones (Flecha y Menú) */
+        .st-key-mi_navbar div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"] {
+            gap: 8px !important;
+            justify-content: flex-end !important;
+        }
+
+        .st-key-mi_navbar div[data-testid="stHorizontalBlock"] div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] {
+            width: auto !important;
+            min-width: fit-content !important;
+            flex: 0 0 auto !important;
+        }
+
+        /* Estilo unificado para el botón de flecha y el botón del menú (38px) */
+        .st-key-mi_navbar div[data-testid="stPopover"] button,
+        .st-key-btn_volver button {
             height: 38px !important;
+            min-height: 38px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -109,13 +136,23 @@ def render_navbar():
             border-radius: 8px !important;
             padding: 0 14px !important;
             margin: 0 !important;
+            font-size: 1rem !important;
             font-weight: 600 !important;
             white-space: nowrap !important;
+            width: auto !important;
         }
 
-        .st-key-mi_navbar div[data-testid="stPopover"] button:hover {
+        .st-key-mi_navbar div[data-testid="stPopover"] button:hover,
+        .st-key-btn_volver button:hover {
             background-color: #222222 !important;
             border-color: #555555 !important;
+        }
+
+        /* Estilo cuando la flecha está deshabilitada (en la primera página) */
+        .st-key-btn_volver button:disabled {
+            opacity: 0.35 !important;
+            cursor: not-allowed !important;
+            background-color: #111111 !important;
         }
 
         /* Empuja el contenido principal hacia abajo */
@@ -129,15 +166,17 @@ def render_navbar():
                 padding: 8px 12px !important;
             }
             
-            /* Iguala altura del logo y el botón a 32px en móvil */
+            /* Iguala altura del logo, flecha y menú a 32px en móvil */
             .st-key-mi_navbar img {
                 height: 32px !important;
             }
 
-            .st-key-mi_navbar div[data-testid="stPopover"] button {
+            .st-key-mi_navbar div[data-testid="stPopover"] button,
+            .st-key-btn_volver button {
                 height: 32px !important;
+                min-height: 32px !important;
                 padding: 0 10px !important;
-                font-size: 0.85rem !important;
+                font-size: 0.9rem !important;
             }
 
             .block-container {
@@ -151,7 +190,7 @@ def render_navbar():
 
     # 3. Estructura del Navbar
     with st.container(key="mi_navbar"):
-        col_logo, col_menu = st.columns([1, 1])
+        col_logo, col_acciones = st.columns([1, 1])
 
         with col_logo:
             if logo_src:
@@ -162,25 +201,40 @@ def render_navbar():
             else:
                 st.markdown('<div style="font-size: 1.5rem; color: white; line-height: 1;">⚖️</div>', unsafe_allow_html=True)
 
-        with col_menu:
-            with st.popover("☰"):
-                items = [
-                    ("Home", "home"),
-                    ("Derechos", "seleccion"),
-                    ("Actividad", "actividad"),
-                    ("CPI", "cpi"),
-                    ("Config", "configuracion"),
-                ]
+        with col_acciones:
+            # Subcolumnas para alinear la flecha justo a la izquierda del menú
+            col_back, col_menu = st.columns([1, 1])
 
-                for label, page in items:
-                    is_active = st.session_state.get("current_page") == page
-                    btn_type = "primary" if is_active else "secondary"
+            with col_back:
+                hay_historial = len(st.session_state.page_history) > 0
+                if st.button("←", key="btn_volver", disabled=not hay_historial):
+                    pagina_anterior = st.session_state.page_history.pop()
+                    st.session_state.current_page = pagina_anterior
+                    st.session_state.last_tracked_page = pagina_anterior
+                    st.rerun()
 
-                    if st.button(
-                        label,
-                        key=f"nav_{page}",
-                        use_container_width=True,
-                        type=btn_type
-                    ):
-                        st.session_state.current_page = page
-                        st.rerun()
+            with col_menu:
+                with st.popover("☰"):
+                    items = [
+                        ("Home", "home"),
+                        ("Derechos", "seleccion"),
+                        ("Actividad", "actividad"),
+                        ("CPI", "cpi"),
+                        ("Config", "configuracion"),
+                    ]
+
+                    for label, page in items:
+                        is_active = st.session_state.get("current_page") == page
+                        btn_type = "primary" if is_active else "secondary"
+
+                        if st.button(
+                            label,
+                            key=f"nav_{page}",
+                            use_container_width=True,
+                            type=btn_type
+                        ):
+                            if page != current:
+                                st.session_state.page_history.append(current)
+                                st.session_state.current_page = page
+                                st.session_state.last_tracked_page = page
+                                st.rerun()
