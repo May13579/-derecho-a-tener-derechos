@@ -140,7 +140,7 @@ def render_navbar():
 
         with col_menu:
             # El popover actúa como el menú desplegable en la esquina derecha
-            with st.popover("☰ Menú"):
+            with st.popover("☰"):
                 items = [
                     ("Home", "home"),
                     ("Derechos", "seleccion"),
