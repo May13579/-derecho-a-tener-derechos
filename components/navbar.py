@@ -115,3 +115,113 @@ def render_navbar():
             ):
                 st.session_state.current_page = page
                 st.rerun()
+
+
+# --------------------------------------------------
+# CÓDIGO DEL MENÚ HAMBURGUESA
+# --------------------------------------------------
+
+# 1. Estilos CSS del menú
+st.markdown("""
+<style>
+/* Contenedor del menú en la esquina derecha */
+.hamburger-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+/* Botón hamburguesa */
+.hamburger-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 1.8rem !important;
+    cursor: pointer;
+    padding: 5px 10px !important;
+    transition: transform 0.2s ease;
+}
+.hamburger-btn:hover {
+    transform: scale(1.1);
+    color: #cccccc !important;
+}
+
+/* Menú desplegable */
+.hamburger-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #1a1a1a;
+    min-width: 200px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.6);
+    z-index: 10000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 10px;
+    border: 1px solid #333;
+}
+
+/* Items del menú */
+.hamburger-dropdown a {
+    color: #d0d0d0;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.hamburger-dropdown a:hover {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+/* Item activo */
+.hamburger-dropdown a.active {
+    background-color: #222222;
+    color: #ffffff;
+    border-left: 3px solid #ffffff;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 2. Lógica de navegación (Lee el parámetro de la URL)
+query_params = st.query_params
+if "page" in query_params:
+    st.session_state.current_page = query_params["page"]
+    st.query_params.clear()  # Limpia la URL para evitar recargas en bucle
+    st.rerun()
+
+# 3. Renderizar HTML del menú
+current_page = st.session_state.get("current_page", "home")
+
+menu_items = [
+    ("Home", "home"),
+    ("Derechos", "seleccion"),
+    ("Actividad", "actividad"),
+    ("CPI", "cpi"),
+    ("Config", "configuracion"),
+]
+
+# Generar los enlaces HTML
+links_html = ""
+for label, page in menu_items:
+    active_class = "active" if current_page == page else ""
+    links_html += f'<a href="?page={page}" class="{active_class}">{label}</a>'
+
+# Inyectar el HTML en la columna derecha del navbar
+st.markdown(f"""
+<div class="hamburger-wrapper">
+    <button class="hamburger-btn" onclick="
+        var menu = document.getElementById('hamburger-menu');
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    ">☰</button>
+    <div id="hamburger-menu" class="hamburger-dropdown">
+        {links_html}
+    </div>
+</div>
+""", unsafe_allow_html=True)
