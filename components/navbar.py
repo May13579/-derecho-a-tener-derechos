@@ -21,58 +21,75 @@ def render_navbar():
     # 2. CSS aislado usando la clase .st-key-mi_navbar
     st.html("""
     <style>
-        /* Oculta la barra superior por defecto de Streamlit */
-        header[data-testid="stHeader"] {
-            display: none;
-        }
+    /* Oculta la barra superior por defecto */
+    header[data-testid="stHeader"] {
+        display: none;
+    }
 
-        /* Fija el contenedor del navbar arriba */
-        .st-key-mi_navbar {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            background-color: #000000 !important;
-            padding: 10px 24px !important;
-            z-index: 9999 !important;
-            border-bottom: 1px solid #222222;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
+    /* Fija el navbar con poco margen lateral (12px) */
+    .st-key-mi_navbar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100vw !important;
+        background-color: #000000 !important;
+        padding: 10px 12px !important;
+        z-index: 9999 !important;
+        border-bottom: 1px solid #222222;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
 
-        /* Alinea el logo a la izquierda */
-        .st-key-mi_navbar div[data-testid="stColumn"]:first-child {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
+    /* Asegura que el bloque horizontal use todo el ancho disponible */
+    .st-key-mi_navbar div[data-testid="stHorizontalBlock"] {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
 
-        /* Alinea el menú en la esquina derecha */
-        .st-key-mi_navbar div[data-testid="stColumn"]:last-child {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
+    /* Columna izquierda (Logo) */
+    .st-key-mi_navbar div[data-testid="stColumn"]:first-child {
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+    }
 
-        /* Estiliza el botón principal del menú (Popover) */
-        .st-key-mi_navbar div[data-testid="stPopover"] button {
-            background-color: #111111 !important;
-            color: #ffffff !important;
-            border: 1px solid #333333 !important;
-            border-radius: 8px !important;
-            padding: 6px 14px !important;
-            font-weight: 600 !important;
-        }
+    /* Columna derecha (Menú): fuerza todos sus hijos internos hacia la derecha */
+    .st-key-mi_navbar div[data-testid="stColumn"]:last-child,
+    .st-key-mi_navbar div[data-testid="stColumn"]:last-child > div,
+    .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"],
+    .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: flex-end !important;
+        width: auto !important;
+        margin-left: auto !important;
+        padding-right: 0 !important;
+    }
 
-        .st-key-mi_navbar div[data-testid="stPopover"] button:hover {
-            background-color: #222222 !important;
-            border-color: #555555 !important;
-        }
+    /* Estilo del botón del menú */
+    .st-key-mi_navbar div[data-testid="stPopover"] button {
+        background-color: #111111 !important;
+        color: #ffffff !important;
+        border: 1px solid #333333 !important;
+        border-radius: 8px !important;
+        padding: 6px 14px !important;
+        font-weight: 600 !important;
+        margin-right: 0 !important;
+    }
 
-        /* Empuja el contenido principal para que no quede debajo del navbar */
-        .block-container {
-            padding-top: 80px !important;
-        }
-    </style>
+    .st-key-mi_navbar div[data-testid="stPopover"] button:hover {
+        background-color: #222222 !important;
+        border-color: #555555 !important;
+    }
+
+    /* Empuja el contenido principal hacia abajo */
+    .block-container {
+        padding-top: 80px !important;
+    }
+</style>
+
     """)
 
     # 3. Estructura del Navbar: Solo 2 columnas (Izquierda: Logo | Derecha: Menú)
