@@ -45,7 +45,6 @@ def show():
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s ease, filter 0.2s ease;
             margin: 0 auto !important;
-            width: 20%
         }
     
         .st-key-btn_conocelos button:hover {
