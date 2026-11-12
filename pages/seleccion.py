@@ -76,26 +76,54 @@ def show():
         .st-key-btn_derecho_6 button::before { background-color: #EBB5D6; } /* Rosa pastel */
 
         /* Ajustes responsivos para teléfonos */
+        /* Ajustes responsivos para teléfonos: bordes negros ajustados al texto */
         @media (max-width: 768px) {
             .st-key-lista_derechos {
-                max-width: 100%;
-                gap: 18px;
-                padding-left: 12px;
+                max-width: 100% !important;
+                width: 100% !important;
+                gap: 16px !important;
+                padding-left: 14px !important;
+                padding-right: 8px !important;
+                align-items: flex-start !important;
             }
+        
+            /* Evita que las cajas invisibles de Streamlit estiren el botón al 100% */
+            .st-key-lista_derechos div[data-testid="stElementContainer"],
+            .st-key-lista_derechos div[data-testid="stButton"] {
+                width: fit-content !important;
+                max-width: 100% !important;
+            }
+        
+            /* Ajusta el borde negro exactamente al tamaño del texto */
             .st-key-lista_derechos button {
-                padding: 12px 18px 12px 50px !important;
-                min-height: 48px !important;
+                width: fit-content !important;
+                max-width: calc(100vw - 44px) !important; /* Evita que se salga de la pantalla */
+                min-height: 44px !important;
+                height: auto !important;
+                padding: 10px 16px 10px 44px !important;
+                border-radius: 12px !important;
+                display: inline-flex !important;
             }
+        
+            /* Permite que el texto haga salto de línea limpio sin dejar huecos */
             .st-key-lista_derechos button p {
-                font-size: 0.92rem !important;
+                font-size: 0.9rem !important;
+                line-height: 1.25 !important;
+                white-space: normal !important;
+                word-break: break-word !important;
             }
+        
+            /* Proporción del círculo y anillo negro en celular */
             .st-key-lista_derechos button::before {
-                left: -10px;
-                width: 32px;
-                height: 32px;
-                border-width: 7px;
+                left: -10px !important;
+                width: 30px !important;
+                height: 30px !important;
+                border-width: 6px !important;
             }
         }
+
+
+        
     </style>
     """)
 
