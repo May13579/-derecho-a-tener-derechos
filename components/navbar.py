@@ -26,7 +26,7 @@ def render_navbar():
         display: none;
     }
 
-    /* Fija el navbar con poco margen lateral (12px) */
+    /* Fija el navbar arriba */
     .st-key-mi_navbar {
         position: fixed !important;
         top: 0 !important;
@@ -34,36 +34,44 @@ def render_navbar():
         right: 0 !important;
         width: 100vw !important;
         background-color: #000000 !important;
-        padding: 10px 12px !important;
+        padding: 10px 16px !important;
         z-index: 9999 !important;
         border-bottom: 1px solid #222222;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
-    /* Asegura que el bloque horizontal use todo el ancho disponible */
+    /* EVITA QUE LAS COLUMNAS SE APILEN EN TELÉFONOS */
     .st-key-mi_navbar div[data-testid="stHorizontalBlock"] {
         width: 100% !important;
         display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
         justify-content: space-between !important;
         align-items: center !important;
+        gap: 8px !important;
     }
 
-    /* Columna izquierda (Logo) */
+    /* Columna izquierda (Logo): evita que ocupe todo el ancho en móvil */
     .st-key-mi_navbar div[data-testid="stColumn"]:first-child {
+        width: auto !important;
+        min-width: fit-content !important;
+        flex: 0 1 auto !important;
         display: flex !important;
         justify-content: flex-start !important;
         align-items: center !important;
     }
 
-    /* Columna derecha (Menú): fuerza todos sus hijos internos hacia la derecha */
+    /* Columna derecha (Menú): evita que baje de línea en móvil */
     .st-key-mi_navbar div[data-testid="stColumn"]:last-child,
     .st-key-mi_navbar div[data-testid="stColumn"]:last-child > div,
     .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"],
     .st-key-mi_navbar div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
+        width: auto !important;
+        min-width: fit-content !important;
+        flex: 0 1 auto !important;
         display: flex !important;
         justify-content: flex-end !important;
-        align-items: flex-end !important;
-        width: auto !important;
+        align-items: center !important;
         margin-left: auto !important;
         padding-right: 0 !important;
     }
@@ -76,7 +84,7 @@ def render_navbar():
         border-radius: 8px !important;
         padding: 6px 14px !important;
         font-weight: 600 !important;
-        margin-right: 0 !important;
+        white-space: nowrap !important; /* Evita que el texto del botón se parta */
     }
 
     .st-key-mi_navbar div[data-testid="stPopover"] button:hover {
@@ -87,6 +95,31 @@ def render_navbar():
     /* Empuja el contenido principal hacia abajo */
     .block-container {
         padding-top: 80px !important;
+    }
+
+    /* AJUSTES ESPECÍFICOS PARA PANTALLAS DE TELÉFONO */
+    @media (max-width: 768px) {
+        .st-key-mi_navbar {
+            padding: 8px 12px !important;
+        }
+        
+        /* Reduce ligeramente el tamaño del logo en móvil */
+        .st-key-mi_navbar img {
+            height: 32px !important;
+        }
+
+        /* Hace el botón del menú más compacto para pantallas pequeñas */
+        .st-key-mi_navbar div[data-testid="stPopover"] button {
+            padding: 5px 10px !important;
+            font-size: 0.85rem !important;
+        }
+
+        /* Ajusta el espacio superior del contenido en móvil */
+        .block-container {
+            padding-top: 68px !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
     }
 </style>
 
