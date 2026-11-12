@@ -90,7 +90,7 @@ def show():
         st.markdown(
             f"""
             <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <img src="data:image/png;base64,{home_img_b64}" style="max-width: 100%; width: 350px; border-radius: 12px;">
+                <img src="data:image/png;base64,{home_img_b64}" style="max-width: 100%; width: 350px; border-radius: 12px; padding-top: 5%;">
             </div>
             """,
             unsafe_allow_html=True
