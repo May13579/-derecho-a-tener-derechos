@@ -19,7 +19,7 @@ def render_navbar():
     # 1. Calcular la ruta absoluta del logo
     current_dir = Path(__file__).parent.resolve()
     project_root = current_dir.parent
-    logo_path = project_root / "assets" / "home.png"
+    logo_path = project_root / "assets" / "navbar.png"
 
     logo_src = ""
     if logo_path.exists():
