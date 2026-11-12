@@ -7,10 +7,22 @@ import pages.actividad as actividad
 import pages.cpi as cpi
 import pages.configuracion as configuracion
 
-import streamlit as st
+# 1. st.set_page_config siempre debe ir primero
+st.set_page_config(
+    page_title="Derecho a tener derechos",
+    page_icon="⚖️",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
+# 2. CSS global: fondo #D9D9D9 y ocultamiento de barra superior
 st.html("""
 <style>
+    /* Cambia el color de fondo de toda la pantalla */
+    html, body, div[data-testid="stAppViewContainer"], .stApp {
+        background-color: #D9D9D9 !important;
+    }
+
     /* Oculta la barra superior (Deploy, menú y línea decorativa) */
     header[data-testid="stHeader"] {
         display: none;
@@ -23,21 +35,12 @@ st.html("""
 </style>
 """)
 
-
-#Check
-
-st.set_page_config(
-    page_title="Derecho a tener derechos",
-    page_icon="⚖️",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
-
 if "current_page" not in st.session_state:
     st.session_state.current_page = "home"
 
-# Agregar padding inferior para que el navbar no tape contenido
+# Espacio superior para que el navbar fijo no tape el contenido
 st.markdown("<div style='height: 110px;'></div>", unsafe_allow_html=True)
+
 # Router
 page = st.session_state.current_page
 if page == "home":
@@ -53,5 +56,5 @@ elif page == "cpi":
 elif page == "configuracion":
     configuracion.show()
 
-# Navbar fijo al final
+# Navbar fijo
 render_navbar()
