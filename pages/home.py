@@ -38,6 +38,7 @@ def show():
             font-weight: 700 !important;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s ease, filter 0.2s ease;
+            margin: 0 auto !important;
         }
 
         .st-key-btn_conocelos button:hover {
@@ -52,7 +53,7 @@ def show():
         st.markdown(
             f"""
             <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <img src="data:image/jpeg;base64,{test_img_b64}" style="max-width: 100%; width: 240px; border-radius: 12px;">
+                <img src="data:image/jpeg;base64,{test_img_b64}" style="max-width: 100%; width: 300px; border-radius: 12px;">
             </div>
             """,
             unsafe_allow_html=True
@@ -75,7 +76,7 @@ def show():
 
     # 5. Texto centrado
     st.markdown(
-        '<p style="text-align: center; font-size: 2.25rem; font-weight: 500; color: #111111; margin-bottom: 10px;">son tuyos. Defiéndelos</p>',
+        '<p style="text-align: center; font-size: 1.50rem; font-weight: 500; color: #111111; margin-bottom: 10px;">son tuyos. Defiéndelos</p>',
         unsafe_allow_html=True
     )
 
