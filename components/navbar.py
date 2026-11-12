@@ -163,7 +163,7 @@ def render_navbar():
                 st.markdown('<div style="font-size: 1.5rem; color: white; line-height: 1;">⚖️</div>', unsafe_allow_html=True)
 
         with col_menu:
-            with st.popover("☰ Menú"):
+            with st.popover("☰"):
                 items = [
                     ("Home", "home"),
                     ("Derechos", "seleccion"),
