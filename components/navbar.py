@@ -192,8 +192,8 @@ def render_navbar():
     with st.container(key="mi_navbar"):
         col_logo, col_acciones = st.columns([1, 1])
 
-               with col_logo:
-            # Muestra el logo únicamente cuando NO estés en la página "home"
+        with col_logo:
+            # Muestra el logo únicamente cuando NO estés en "home"
             if current != "home":
                 if logo_src:
                     st.markdown(
@@ -203,9 +203,7 @@ def render_navbar():
                 else:
                     st.markdown('<div style="font-size: 1.5rem; color: white; line-height: 1;">⚖️</div>', unsafe_allow_html=True)
             else:
-                # Espacio vacío invisible para mantener la estructura y altura del navbar
                 st.markdown('<div style="height: 38px;"></div>', unsafe_allow_html=True)
-
 
         with col_acciones:
             # Subcolumnas para alinear la flecha justo a la izquierda del menú
