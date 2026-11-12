@@ -7,6 +7,26 @@ import pages.actividad as actividad
 import pages.cpi as cpi
 import pages.configuracion as configuracion
 
+import streamlit as st
+
+st.html("""
+<style>
+    /* Oculta la barra superior (Deploy, menú y línea decorativa) */
+    header[data-testid="stHeader"] {
+        display: none;
+    }
+
+    /* Reduce el espacio en blanco que queda arriba */
+    .block-container {
+        padding-top: 1rem;
+    }
+</style>
+""")
+
+st.title("Mi aplicación sin barra superior")
+
+#Check
+
 st.set_page_config(
     page_title="Derecho a tener derechos",
     page_icon="⚖️",
