@@ -19,33 +19,33 @@ CONTENIDO_DERECHOS = {
     },
     "Derecho a la educación": {
         "color": "#A2D38E",  # Verde pastel
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=fMN7G4piQV0",
+        "pdf_file": "Educacion.pdf"
     },
     "Derecho al acceso a la información": {
         "color": "#FBE987",  # Amarillo pastel
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=1ZD-S44Y36E",
+        "pdf_file": "Informacion.pdf"
     },
     "Derecho a la participación política": {
         "color": "#CE6A6B",  # Coral / Salmón
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=KL3BpPgW2FY",
+        "pdf_file": "Opinion-Politica.pdf"
     },
     "Derecho al acceso a la justicia": {
         "color": "#C7F3EC",  # Menta / Cian claro
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=YurWptHGE5M",
+        "pdf_file": "Acceso-Justicia.pdf"
     },
     "Derecho al trabajo": {
         "color": "#82B2BD",  # Azul grisáceo
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=p4gJn6G36VM",
+        "pdf_file": "Trabajo.pdf"
     },
     "Derecho a la dignidad": {
         "color": "#EBB5D6",  # Rosa pastel
-        "video_url": "",
-        "pdf_file": "Derecho.pdf"
+        "video_url": "https://www.youtube.com/watch?v=yTGCsf9OpmA",
+        "pdf_file": "Dignidad.pdf"
     }
 }
 
@@ -72,9 +72,9 @@ def show():
 
         /* Contenedor principal centrado */
         .contenedor-pagina-derecho {{
-            max-width: 650px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: 0 12px;
+            padding: 0 0 0 14px; /* Espacio para que el círculo sobresalga, igual que en el menú */
         }}
 
         /* Píldora negra del título con círculo de color a la izquierda */
@@ -83,23 +83,25 @@ def show():
             background-color: #050505;
             color: #ffffff;
             border-radius: 14px;
-            padding: 14px 24px 14px 56px;
-            min-height: 54px;
-            width: fit-content;
-            max-width: 100%;
+            padding: 14px 22px 14px 56px;
+            height: 64px;
+            width: 100%;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
-            margin-left: 12px;
+            justify-content: flex-start;
+            text-align: left;
             margin-bottom: 18px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
         }}
 
         .header-pildora-derecho span {{
             font-family: 'Space Mono', 'Courier New', monospace;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #ffffff;
             line-height: 1.3;
+            text-align: left;
         }}
 
         /* Círculo de color con borde negro grueso */
@@ -161,13 +163,13 @@ def show():
 
         @media (max-width: 768px) {{
             .header-pildora-derecho {{
-                padding: 11px 18px 11px 46px;
-                min-height: 46px;
-                margin-left: 10px;
+                padding: 10px 16px 10px 44px;
+                height: 60px;
                 margin-bottom: 16px;
             }}
             .header-pildora-derecho span {{
-                font-size: 0.95rem;
+                font-size: 0.9rem;
+                line-height: 1.25;
             }}
             .header-pildora-derecho::before {{
                 left: -10px;
