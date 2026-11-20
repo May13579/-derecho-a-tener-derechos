@@ -39,7 +39,7 @@ if "current_page" not in st.session_state:
     st.session_state.current_page = "home"
 
 # Espacio superior para que el navbar fijo no tape el contenido
-st.markdown("<div style='height: 110px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
 
 # Router
 page = st.session_state.current_page
