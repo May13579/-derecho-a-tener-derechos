@@ -65,6 +65,18 @@ def show():
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
+        /* Reduce el espacio entre el navbar y el título de esta página */
+        div[data-testid="stMainBlockContainer"],
+        .block-container {{
+            padding-top: 1rem !important;
+        }}
+
+        /* El bloque que solo contiene este <style> no debe ocupar espacio */
+        div[data-testid="stElementContainer"]:has(> div[data-testid="stHtml"] > style),
+        div[data-testid="stElementContainer"]:has(style):not(:has(.tarjeta-info-derecho)) {{
+            display: none !important;
+        }}
+
         /* Contenedor principal centrado */
         .contenedor-pagina-derecho {{
             max-width: 650px;
