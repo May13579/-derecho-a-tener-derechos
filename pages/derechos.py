@@ -8,7 +8,14 @@ CONTENIDO_DERECHOS = {
     "Derecho a tener derechos": {
         "color": "#B05858",  # Terracota / Rojo apagado
         "video_url": "https://www.youtube.com/watch?v=rMizWVmnEZA",
-        "pdf_file": "Derecho.pdf"
+        "pdf_file": "Derecho.pdf",
+        # TODO: completar el resto del texto (el diseño se corta en "por eso estamos")
+        "descripcion": (
+            "‘Derechos. Son tuyos. Defiéndelos.’ es una serie de 7 videos y "
+            "materiales complementarios que dedicamos a la educación de algunos "
+            "derechos humanos universales y derechos constitucionales de Puerto Rico."
+            "<br>No se puede defender lo que no se conoce, por eso estamos"
+        )
     },
     "Derecho a la educación": {
         "color": "#A2D38E",  # Verde pastel
@@ -56,7 +63,7 @@ def show():
     # 1. CSS para el encabezado, el video nativo st.video y reducir el espacio antes del botón
     st.html(f"""
     <style>
-        @import url('https://googleapis.com');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
         /* Contenedor principal centrado */
         .contenedor-pagina-derecho {{
@@ -126,6 +133,27 @@ def show():
             max-width: 620px !important;
         }}
 
+        /* Tarjeta de texto: marco negro grueso con interior blanco */
+        .tarjeta-info-derecho {{
+            max-width: 620px;
+            margin: 8px auto 32px auto;
+            background-color: #050505;
+            border-radius: 22px;
+            padding: 10px;
+            box-sizing: border-box;
+        }}
+
+        .tarjeta-info-derecho .interior {{
+            background-color: #ffffff;
+            border-radius: 14px;
+            padding: 18px 20px;
+            font-family: 'Space Mono', 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.5;
+            color: #050505;
+        }}
+
         @media (max-width: 768px) {{
             .header-pildora-derecho {{
                 padding: 11px 18px 11px 46px;
@@ -172,7 +200,7 @@ def show():
         components.html(
             f"""
             <style>
-                @import url('https://googleapis.com');
+                @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
                 body {{
                     margin: 0;
                     padding: 4px 0 10px 0;
@@ -229,3 +257,13 @@ def show():
         )
     else:
         st.warning(f"No se encontró el archivo en: assets/PDF/{info['pdf_file']}")
+
+    # 5. Tarjeta de descripción (marco negro, interior blanco)
+    if info.get("descripcion"):
+        st.html(
+            f"""
+            <div class="tarjeta-info-derecho">
+                <div class="interior">{info["descripcion"]}</div>
+            </div>
+            """
+        )
