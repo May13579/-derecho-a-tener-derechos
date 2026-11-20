@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 import base64
 
@@ -59,7 +60,7 @@ def show():
     project_root = current_dir.parent
     pdf_path = project_root / "assets" / "PDF" / info["pdf_file"]
 
-    # 1. CSS para el encabezado, el reproductor de YouTube y la píldora rosa
+    # 1. CSS para el encabezado y ajuste de iframes de componentes
     st.html(f"""
     <style>
         @import url('https://googleapis.com');
@@ -84,7 +85,7 @@ def show():
             display: flex;
             align-items: center;
             margin-left: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
         }}
 
@@ -111,69 +112,19 @@ def show():
             box-sizing: content-box;
         }}
 
-        /* Contenedor responsivo 16:9 para que el video de YouTube siempre cargue */
-        .video-wrapper {{
-            position: relative;
-            width: 100%;
-            max-width: 620px;
-            margin: 0 auto 28px auto;
-            aspect-ratio: 16 / 9;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-            background-color: #000000;
+        /* Centra los componentes HTML (video y botón PDF) */
+        iframe[title="streamlit_components_v1.html_v1"] {{
+            display: block !important;
+            margin: 0 auto !important;
+            max-width: 620px !important;
         }}
 
-        .video-wrapper iframe {{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }}
-
-        /* Contenedor centrado de la píldora rosa */
-        .contenedor-boton-pdf {{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 8px;
-            margin-bottom: 30px;
-        }}
-
-        /* Enlace estilizado como píldora rosa "Material Educativo" */
-        a.pildora-material-edu {{
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #EBB5D6 !important;
-            color: #050505 !important;
-            text-decoration: none !important;
-            border-radius: 14px;
-            padding: 12px 28px;
-            font-family: 'Space Mono', 'Courier New', monospace;
-            font-size: 1.15rem;
-            font-weight: 700;
-            white-space: nowrap;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }}
-
-        a.pildora-material-edu:hover {{
-            filter: brightness(0.95);
-            transform: translateY(-2px);
-            color: #050505 !important;
-        }}
-
-        /* Ajustes responsivos para teléfonos */
         @media (max-width: 768px) {{
             .header-pildora-derecho {{
                 padding: 11px 18px 11px 46px;
                 min-height: 46px;
                 margin-left: 10px;
-                margin-bottom: 20px;
+                margin-bottom: 16px;
             }}
             .header-pildora-derecho span {{
                 font-size: 0.95rem;
@@ -183,10 +134,6 @@ def show():
                 width: 30px;
                 height: 30px;
                 border-width: 6px;
-            }}
-            a.pildora-material-edu {{
-                padding: 10px 22px;
-                font-size: 1rem;
             }}
         }}
     </style>
@@ -204,40 +151,77 @@ def show():
         unsafe_allow_html=True
     )
 
-    # 3. Reproductor de YouTube incrustado directamente (100% confiable en móvil y PC)
+    # 3. Reproductor de YouTube usando components.html (sin ser bloqueado por Streamlit)
     if info["youtube_id"]:
         yt_id = info["youtube_id"]
         start = info["start_time"]
-        st.markdown(
+        components.html(
             f"""
-            <div class="video-wrapper">
+            <div style="width: 100%; max-width: 620px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); background: #000;">
                 <iframe 
                     src="https://youtube.com{yt_id}?start={start}&rel=0" 
-                    title="{derecho_actual}"
+                    style="width: 100%; height: 100%; border: none;"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
             """,
-            unsafe_allow_html=True
+            height=365
         )
     else:
         st.info("Video educativo próximamente disponible para este derecho.")
 
-    # 4. Píldora rosa "Material Educativo" que abre el PDF en una pestaña nueva
+    # 4. Botón rosa "Material Educativo" que abre el PDF al instante usando Blob URL
     if pdf_path.exists():
         with open(pdf_path, "rb") as f:
             base64_pdf = base64.b64encode(f.read()).decode("utf-8")
 
-        st.markdown(
+        components.html(
             f"""
-            <div class="contenedor-boton-pdf">
-                <a href="data:application/pdf;base64,{base64_pdf}" target="_blank" rel="noopener noreferrer" class="pildora-material-edu">
-                    Material Educativo
-                </a>
-            </div>
+            <style>
+                @import url('https://googleapis.com');
+                body {{
+                    margin: 0;
+                    padding: 10px 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: transparent;
+                }}
+                .btn-pdf {{
+                    background-color: #EBB5D6;
+                    color: #050505;
+                    border: none;
+                    border-radius: 14px;
+                    padding: 12px 28px;
+                    font-family: 'Space Mono', 'Courier New', monospace;
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+                    transition: transform 0.2s ease, filter 0.2s ease;
+                }}
+                .btn-pdf:hover {{
+                    filter: brightness(0.95);
+                    transform: translateY(-2px);
+                }}
+            </style>
+            <button class="btn-pdf" onclick="abrirPDF()">Material Educativo</button>
+            <script>
+                function abrirPDF() {{
+                    const byteCharacters = atob("{base64_pdf}");
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {{
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }}
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {{ type: 'application/pdf' }});
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                }}
+            </script>
             """,
-            unsafe_allow_html=True
+            height=75
         )
     else:
         st.warning(f"No se encontró el archivo en: assets/PDF/{info['pdf_file']}")
