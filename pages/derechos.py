@@ -1,41 +1,49 @@
 import streamlit as st
 from pathlib import Path
+import base64
 
-# Diccionario con el color pastel, enlace de video y ruta del PDF de cada derecho
+# Diccionario con el color pastel, ID del video de YouTube y ruta del PDF
 CONTENIDO_DERECHOS = {
     "Derecho a tener derechos": {
         "color": "#B05858",  # Terracota / Rojo apagado
-        "video_url": "https://youtube.com",
+        "youtube_id": "rMizWVmnEZA",
+        "start_time": 22,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la educación": {
         "color": "#A2D38E",  # Verde pastel
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al acceso a la información": {
         "color": "#FBE987",  # Amarillo pastel
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la participación política": {
         "color": "#CE6A6B",  # Coral / Salmón
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al acceso a la justicia": {
         "color": "#C7F3EC",  # Menta / Cian claro
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al trabajo": {
         "color": "#82B2BD",  # Azul grisáceo
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la dignidad": {
         "color": "#EBB5D6",  # Rosa pastel
-        "video_url": "",
+        "youtube_id": "",
+        "start_time": 0,
         "pdf_file": "Derecho.pdf"
     }
 }
@@ -51,7 +59,7 @@ def show():
     project_root = current_dir.parent
     pdf_path = project_root / "assets" / "PDF" / info["pdf_file"]
 
-    # 1. CSS para replicar el diseño exacto de la imagen (adaptado a stDownloadButton)
+    # 1. CSS para el encabezado, el reproductor de YouTube y la píldora rosa
     st.html(f"""
     <style>
         @import url('https://googleapis.com');
@@ -103,51 +111,60 @@ def show():
             box-sizing: content-box;
         }}
 
-        /* Bordes redondeados para el reproductor de video de Streamlit */
-        div[data-testid="stVideo"] {{
+        /* Contenedor responsivo 16:9 para que el video de YouTube siempre cargue */
+        .video-wrapper {{
+            position: relative;
+            width: 100%;
             max-width: 620px;
-            margin: 0 auto 24px auto;
-            border-radius: 18px !important;
-            overflow: hidden !important;
+            margin: 0 auto 28px auto;
+            aspect-ratio: 16 / 9;
+            border-radius: 18px;
+            overflow: hidden;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+            background-color: #000000;
         }}
 
-        /* Centrado del botón rosa "Material Educativo" (stDownloadButton) */
-        .st-key-btn_material_edu,
-        .st-key-btn_material_edu div[data-testid="stDownloadButton"] {{
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            width: 100% !important;
+        .video-wrapper iframe {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }}
+
+        /* Contenedor centrado de la píldora rosa */
+        .contenedor-boton-pdf {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
             margin-top: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 30px;
         }}
 
-        /* Estilo exacto de la píldora rosa "Material Educativo" */
-        .st-key-btn_material_edu button {{
+        /* Enlace estilizado como píldora rosa "Material Educativo" */
+        a.pildora-material-edu {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background-color: #EBB5D6 !important;
             color: #050505 !important;
-            border: none !important;
-            border-radius: 14px !important;
-            padding: 12px 28px !important;
-            width: auto !important;
-            min-width: fit-content !important;
-            white-space: nowrap !important;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            text-decoration: none !important;
+            border-radius: 14px;
+            padding: 12px 28px;
+            font-family: 'Space Mono', 'Courier New', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
             transition: transform 0.2s ease, filter 0.2s ease;
         }}
 
-        .st-key-btn_material_edu button p {{
-            font-family: 'Space Mono', 'Courier New', monospace !important;
-            font-size: 1.15rem !important;
-            font-weight: 700 !important;
-            color: #050505 !important;
-            margin: 0 !important;
-        }}
-
-        .st-key-btn_material_edu button:hover {{
+        a.pildora-material-edu:hover {{
             filter: brightness(0.95);
             transform: translateY(-2px);
+            color: #050505 !important;
         }}
 
         /* Ajustes responsivos para teléfonos */
@@ -167,11 +184,9 @@ def show():
                 height: 30px;
                 border-width: 6px;
             }}
-            .st-key-btn_material_edu button {{
-                padding: 10px 22px !important;
-            }}
-            .st-key-btn_material_edu button p {{
-                font-size: 1rem !important;
+            a.pildora-material-edu {{
+                padding: 10px 22px;
+                font-size: 1rem;
             }}
         }}
     </style>
@@ -189,23 +204,40 @@ def show():
         unsafe_allow_html=True
     )
 
-    # 3. Video de YouTube (con soporte para marca de tiempo t=22s)
-    if info["video_url"]:
-        st.video(info["video_url"], start_time=22)
+    # 3. Reproductor de YouTube incrustado directamente (100% confiable en móvil y PC)
+    if info["youtube_id"]:
+        yt_id = info["youtube_id"]
+        start = info["start_time"]
+        st.markdown(
+            f"""
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://youtube.com{yt_id}?start={start}&rel=0" 
+                    title="{derecho_actual}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     else:
         st.info("Video educativo próximamente disponible para este derecho.")
 
-    # 4. Botón rosa "Material Educativo" vinculado al archivo PDF
+    # 4. Píldora rosa "Material Educativo" que abre el PDF en una pestaña nueva
     if pdf_path.exists():
-        with open(pdf_path, "rb") as pdf_file:
-            pdf_bytes = pdf_file.read()
+        with open(pdf_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode("utf-8")
 
-        st.download_button(
-            label="Material Educativo",
-            data=pdf_bytes,
-            file_name=info["pdf_file"],
-            mime="application/pdf",
-            key="btn_material_edu"
+        st.markdown(
+            f"""
+            <div class="contenedor-boton-pdf">
+                <a href="data:application/pdf;base64,{base64_pdf}" target="_blank" rel="noopener noreferrer" class="pildora-material-edu">
+                    Material Educativo
+                </a>
+            </div>
+            """,
+            unsafe_allow_html=True
         )
     else:
         st.warning(f"No se encontró el archivo en: assets/PDF/{info['pdf_file']}")
