@@ -53,6 +53,18 @@ def show():
             margin: 0 !important;
         }
 
+        /* Alinea el texto a la izquierda en todas las píldoras */
+        .st-key-lista_derechos button > div,
+        .st-key-lista_derechos button div[data-testid="stMarkdownContainer"] {
+            width: 100% !important;
+            justify-content: flex-start !important;
+            text-align: left !important;
+        }
+
+        .st-key-lista_derechos button p {
+            text-align: left !important;
+        }
+
         .st-key-lista_derechos button:hover {
             transform: translateX(4px);
             background-color: #161616 !important;
