@@ -151,7 +151,7 @@ def show():
         unsafe_allow_html=True
     )
 
-    # 3. Reproductor de YouTube usando components.html (sin ser bloqueado por Streamlit)
+    # 3. Reproductor de YouTube con URL embed correcta
     if info["youtube_id"]:
         yt_id = info["youtube_id"]
         start = info["start_time"]
@@ -171,7 +171,7 @@ def show():
     else:
         st.info("Video educativo próximamente disponible para este derecho.")
 
-    # 4. Botón rosa "Material Educativo" que abre el PDF al instante usando Blob URL
+    # 4. Botón rosa "Material Educativo" que abre el PDF y recarga la pestaña automáticamente
     if pdf_path.exists():
         with open(pdf_path, "rb") as f:
             base64_pdf = base64.b64encode(f.read()).decode("utf-8")
@@ -207,33 +207,32 @@ def show():
                 }}
             </style>
             <button class="btn-pdf" onclick="abrirPDF()">Material Educativo</button>
-                <script>
-                    function abrirPDF() {
-                        const byteCharacters = atob("{base64_pdf}");
-                        const byteNumbers = new Array(byteCharacters.length);
-                        for (let i = 0; i < byteCharacters.length; i++) {
-                            byteNumbers[i] = byteCharacters.charCodeAt(i);
-                        }
-                        const byteArray = new Uint8Array(byteNumbers);
-                        const blob = new Blob([byteArray], { type: 'application/pdf' });
-                        const blobUrl = URL.createObjectURL(blob);
-                        
-                        // Abre la nueva pestaña y guarda su referencia
-                        const nuevaPestana = window.open(blobUrl, '_blank');
-                        
-                        // Fuerza el refresh automático de esa pestaña tras 300ms
-                        if (nuevaPestana) {
-                            setTimeout(() => {
-                                try {
-                                    nuevaPestana.location.reload();
-                                } catch (e) {
-                                    nuevaPestana.location.href = blobUrl;
-                                }
-                            }, 300);
-                        }
-                    }
-                </script>
-
+            <script>
+                function abrirPDF() {{
+                    const byteCharacters = atob("{base64_pdf}");
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {{
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }}
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {{ type: 'application/pdf' }});
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    // Abre la nueva pestaña y guarda su referencia
+                    const nuevaPestana = window.open(blobUrl, '_blank');
+                    
+                    // Fuerza el refresh automático de esa pestaña tras 300ms
+                    if (nuevaPestana) {{
+                        setTimeout(() => {{
+                            try {{
+                                nuevaPestana.location.reload();
+                            }} catch (e) {{
+                                nuevaPestana.location.href = blobUrl;
+                            }}
+                        }}, 300);
+                    }}
+                }}
+            </script>
             """,
             height=75
         )
