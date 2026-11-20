@@ -207,19 +207,33 @@ def show():
                 }}
             </style>
             <button class="btn-pdf" onclick="abrirPDF()">Material Educativo</button>
-            <script>
-                function abrirPDF() {{
-                    const byteCharacters = atob("{base64_pdf}");
-                    const byteNumbers = new Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {{
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }}
-                    const byteArray = new Uint8Array(byteNumbers);
-                    const blob = new Blob([byteArray], {{ type: 'application/pdf' }});
-                    const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl, '_blank');
-                }}
-            </script>
+                <script>
+                    function abrirPDF() {
+                        const byteCharacters = atob("{base64_pdf}");
+                        const byteNumbers = new Array(byteCharacters.length);
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        const byteArray = new Uint8Array(byteNumbers);
+                        const blob = new Blob([byteArray], { type: 'application/pdf' });
+                        const blobUrl = URL.createObjectURL(blob);
+                        
+                        // Abre la nueva pestaña y guarda su referencia
+                        const nuevaPestana = window.open(blobUrl, '_blank');
+                        
+                        // Fuerza el refresh automático de esa pestaña tras 300ms
+                        if (nuevaPestana) {
+                            setTimeout(() => {
+                                try {
+                                    nuevaPestana.location.reload();
+                                } catch (e) {
+                                    nuevaPestana.location.href = blobUrl;
+                                }
+                            }, 300);
+                        }
+                    }
+                </script>
+
             """,
             height=75
         )
