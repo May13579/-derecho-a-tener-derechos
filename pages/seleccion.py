@@ -5,7 +5,7 @@ def show():
     st.html("""
     <style>
         /* Importa tipografía monoespaciada similar a la imagen */
-        @import url('https://googleapis.com');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
         /* Contenedor centrado de la lista */
         .st-key-lista_derechos {
@@ -17,6 +17,12 @@ def show():
             padding-left: 14px; /* Espacio para que el círculo sobresalga sin cortarse */
         }
 
+        /* Las cajas de Streamlit ocupan todo el ancho para que todas las píldoras midan igual */
+        .st-key-lista_derechos div[data-testid="stElementContainer"],
+        .st-key-lista_derechos div[data-testid="stButton"] {
+            width: 100% !important;
+        }
+
         /* Estilo base de cada botón (píldora negra) */
         .st-key-lista_derechos button {
             position: relative !important;
@@ -25,9 +31,10 @@ def show():
             border: none !important;
             border-radius: 14px !important;
             padding: 14px 22px 14px 56px !important; /* Espacio a la izquierda para el círculo */
-            min-height: 54px !important;
-            width: fit-content !important;
+            height: 64px !important;
+            width: 100% !important;
             max-width: 100% !important;
+            box-sizing: border-box !important;
             text-align: left !important;
             justify-content: flex-start !important;
             align-items: center !important;
@@ -39,7 +46,7 @@ def show():
         /* Tipografía monoespaciada blanca dentro del botón */
         .st-key-lista_derechos button p {
             font-family: 'Space Mono', 'Courier New', monospace !important;
-            font-size: 1.35rem !important;
+            font-size: 1.05rem !important;
             font-weight: 700 !important;
             color: #ffffff !important;
             line-height: 1.3 !important;
@@ -90,16 +97,15 @@ def show():
             /* Evita que las cajas invisibles de Streamlit estiren el botón al 100% */
             .st-key-lista_derechos div[data-testid="stElementContainer"],
             .st-key-lista_derechos div[data-testid="stButton"] {
-                width: fit-content !important;
+                width: 100% !important;
                 max-width: 100% !important;
             }
         
             /* Ajusta el borde negro exactamente al tamaño del texto */
             .st-key-lista_derechos button {
-                width: fit-content !important;
-                max-width: calc(100vw - 44px) !important; /* Evita que se salga de la pantalla */
-                min-height: 44px !important;
-                height: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 60px !important; /* Misma altura para todas las píldoras */
                 padding: 10px 16px 10px 44px !important;
                 border-radius: 12px !important;
                 display: inline-flex !important;
