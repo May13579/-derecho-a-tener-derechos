@@ -3,48 +3,41 @@ import streamlit.components.v1 as components
 from pathlib import Path
 import base64
 
-# Diccionario con el color pastel, ID del video de YouTube y ruta del PDF
+# Diccionario con el color pastel, URL limpia de YouTube y ruta del PDF
 CONTENIDO_DERECHOS = {
     "Derecho a tener derechos": {
         "color": "#B05858",  # Terracota / Rojo apagado
-        "youtube_id": "rMizWVmnEZA",
-        "start_time": 22,
+        "video_url": "https://www.youtube.com/watch?v=rMizWVmnEZA",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la educación": {
         "color": "#A2D38E",  # Verde pastel
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al acceso a la información": {
         "color": "#FBE987",  # Amarillo pastel
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la participación política": {
         "color": "#CE6A6B",  # Coral / Salmón
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al acceso a la justicia": {
         "color": "#C7F3EC",  # Menta / Cian claro
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho al trabajo": {
         "color": "#82B2BD",  # Azul grisáceo
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     },
     "Derecho a la dignidad": {
         "color": "#EBB5D6",  # Rosa pastel
-        "youtube_id": "",
-        "start_time": 0,
+        "video_url": "",
         "pdf_file": "Derecho.pdf"
     }
 }
@@ -60,7 +53,7 @@ def show():
     project_root = current_dir.parent
     pdf_path = project_root / "assets" / "PDF" / info["pdf_file"]
 
-    # 1. CSS para el encabezado y ajuste de iframes de componentes
+    # 1. CSS para el encabezado, el video nativo st.video y reducir el espacio antes del botón
     st.html(f"""
     <style>
         @import url('https://googleapis.com');
@@ -85,7 +78,7 @@ def show():
             display: flex;
             align-items: center;
             margin-left: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
         }}
 
@@ -112,7 +105,21 @@ def show():
             box-sizing: content-box;
         }}
 
-        /* Centra los componentes HTML (video y botón PDF) */
+        /* Estiliza y redondea el reproductor nativo st.video sin dejar huecos debajo */
+        div[data-testid="stVideo"] {{
+            max-width: 620px !important;
+            margin: 0 auto !important;
+            border-radius: 18px !important;
+            overflow: hidden !important;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18) !important;
+        }}
+
+        /* Reduce el margen entre bloques de Streamlit para acercar el botón rosa al video */
+        div[data-testid="stElementContainer"]:has(div[data-testid="stVideo"]) {{
+            margin-bottom: 8px !important;
+        }}
+
+        /* Centra el componente del botón PDF */
         iframe[title="streamlit_components_v1.html_v1"] {{
             display: block !important;
             margin: 0 auto !important;
@@ -151,27 +158,13 @@ def show():
         unsafe_allow_html=True
     )
 
-    # 3. Reproductor de YouTube con URL embed correcta
-    if info["youtube_id"]:
-        yt_id = info["youtube_id"]
-        start = info["start_time"]
-        components.html(
-            f"""
-            <div style="width: 100%; max-width: 620px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); background: #000;">
-                <iframe 
-                    src="https://youtube.com{yt_id}?start={start}&rel=0" 
-                    style="width: 100%; height: 100%; border: none;"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-            """,
-            height=365
-        )
+    # 3. Video de YouTube con st.video() y URL limpia (altura automática en PC y móvil)
+    if info["video_url"]:
+        st.video(info["video_url"])
     else:
         st.info("Video educativo próximamente disponible para este derecho.")
 
-    # 4. Botón rosa "Material Educativo" que abre el PDF y recarga la pestaña automáticamente
+    # 4. Botón rosa "Material Educativo" pegado debajo del video
     if pdf_path.exists():
         with open(pdf_path, "rb") as f:
             base64_pdf = base64.b64encode(f.read()).decode("utf-8")
@@ -182,7 +175,7 @@ def show():
                 @import url('https://googleapis.com');
                 body {{
                     margin: 0;
-                    padding: 10px 0;
+                    padding: 4px 0 10px 0;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -218,10 +211,8 @@ def show():
                     const blob = new Blob([byteArray], {{ type: 'application/pdf' }});
                     const blobUrl = URL.createObjectURL(blob);
                     
-                    // Abre la nueva pestaña y guarda su referencia
                     const nuevaPestana = window.open(blobUrl, '_blank');
                     
-                    // Fuerza el refresh automático de esa pestaña tras 300ms
                     if (nuevaPestana) {{
                         setTimeout(() => {{
                             try {{
@@ -234,7 +225,7 @@ def show():
                 }}
             </script>
             """,
-            height=75
+            height=65
         )
     else:
         st.warning(f"No se encontró el archivo en: assets/PDF/{info['pdf_file']}")
