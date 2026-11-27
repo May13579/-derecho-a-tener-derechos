@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from pathlib import Path
 import base64
+import html
 
 # Diccionario con el color pastel, URL limpia de YouTube y ruta del PDF
 CONTENIDO_DERECHOS = {
@@ -9,43 +10,83 @@ CONTENIDO_DERECHOS = {
         "color": "#B05858",  # Terracota / Rojo apagado
         "video_url": "https://www.youtube.com/watch?v=rMizWVmnEZA",
         "pdf_file": "Derecho.pdf",
-        # TODO: completar el resto del texto (el diseño se corta en "por eso estamos")
-        "descripcion": (
-            "‘Derechos. Son tuyos. Defiéndelos.’ es una serie de 7 videos y "
-            "materiales complementarios que dedicamos a la educación de algunos "
-            "derechos humanos universales y derechos constitucionales de Puerto Rico."
-            "<br>No se puede defender lo que no se conoce, por eso estamos"
-        )
+        "descripcion": [
+            'Es la idea de que todas las personas tienen derecho a tener derechos, sin importar su condición política o ideológica.',
+            'Con el paso del tiempo, esta noción ha evolucionado hasta convertirse en el reconocimiento de que todas las personas tienen derechos humanos que deben ser reconocidos, garantizados y respetados.',
+            'El derecho a tener derechos es el primer derecho, porque permite a todos los individuos, sin excepción, reclamar y exigir que sus derechos sean protegidos.'
+        ]
     },
     "Derecho a la educación": {
         "color": "#A2D38E",  # Verde pastel
         "video_url": "https://www.youtube.com/watch?v=fMN7G4piQV0",
-        "pdf_file": "Educacion.pdf"
+        "pdf_file": "Educacion.pdf",
+        "descripcion": [
+            'La Constitución de Puerto Rico establece que toda persona tiene derecho a una educación que fomente el pleno desarrollo de su personalidad y el fortalecimiento del respeto de los derechos humanos y de las libertades fundamentales.',
+            'Requiere, además, que haya un sistema de educación pública que será libre y enteramente no sectario.',
+            'La enseñanza será gratuita en la escuela primaria y secundaria y, hasta donde las facilidades del Estado lo permitan, será obligatoria para la escuela primaria.',
+            'La Constitución no solo exige que haya acceso a la educación sino que también establece qué tipo de educación se debe recibir: una educación plena.',
+            'Es decir, que atienda todos los aspectos de la personalidad humana y que fortalezca el respeto por los derechos humanos.'
+        ]
     },
     "Derecho al acceso a la información": {
         "color": "#FBE987",  # Amarillo pastel
         "video_url": "https://www.youtube.com/watch?v=1ZD-S44Y36E",
-        "pdf_file": "Informacion.pdf"
+        "pdf_file": "Informacion.pdf",
+        "descripcion": [
+            'La información es una herramienta vital para mantener nuestra democracia.',
+            'Todas las personas tienen derecho a conocer la información pública que está en manos del Gobierno.',
+            'Cuando conocemos la información que afecta nuestras vidas y la de nuestra comunidad, podemos opinar, analizar y participar efectivamente en la toma de decisiones.',
+            'Las personas necesitan tener acceso a la información para intercambiar ideas, opinar y tomar decisiones de manera informada y efectiva.',
+            'Cuando hablamos de acceso a la información hablamos de que nuestros gobernantes tienen la obligación de administrar el País con transparencia.'
+        ]
     },
     "Derecho a la participación política": {
         "color": "#CE6A6B",  # Coral / Salmón
         "video_url": "https://www.youtube.com/watch?v=KL3BpPgW2FY",
-        "pdf_file": "Opinion-Politica.pdf"
+        "pdf_file": "Opinion-Politica.pdf",
+        "descripcion": [
+            'Sin participación política no existe democracia.',
+            'En una sociedad democrática, las personas tienen el derecho de participar y decidir sobre las maneras en que se gobierna y administra el País.',
+            'El derecho a la participación política debe reconocerse por igual a todas las personas, sin importar su posición social, sexo, raza u otras condiciones.',
+            'Cuando hablamos de participación nos referimos a que la toma de decisiones que afectan a las personas y sus comunidades tiene que considerar la experiencia, opinión y voz de los distintos grupos.',
+            'No se trata solo de ser escuchados.',
+            'Para que la participación política sea verdadera, las propuestas de los distintos grupos deben considerarse y estudiarse con seriedad.'
+        ]
     },
     "Derecho al acceso a la justicia": {
         "color": "#C7F3EC",  # Menta / Cian claro
         "video_url": "https://www.youtube.com/watch?v=YurWptHGE5M",
-        "pdf_file": "Acceso-Justicia.pdf"
+        "pdf_file": "Acceso-Justicia.pdf",
+        "descripcion": [
+            'El acceso a la justicia es un derecho fundamental que debe garantizarse en una sociedad democrática, participativa e igualitaria.',
+            'Es el derecho que tienen todas las personas a utilizar las herramientas y mecanismos legales para que se reconozcan y protejan sus demás derechos.',
+            'No existe acceso a la justicia cuando, por motivos económicos, sociales, culturales o políticos, la ley y los sistemas de justicia discriminan contra las personas o grupos.',
+            'Sin el acceso a la justicia, otros derechos como el derecho al trabajo, a la educación o al acceso a la información no pueden disfrutarse plenamente ya que, sin esta garantía, las personas no podrían exigir los remedios y protecciones que les corresponden.'
+        ]
     },
     "Derecho al trabajo": {
         "color": "#82B2BD",  # Azul grisáceo
         "video_url": "https://www.youtube.com/watch?v=p4gJn6G36VM",
-        "pdf_file": "Trabajo.pdf"
+        "pdf_file": "Trabajo.pdf",
+        "descripcion": [
+            'Todas las personas tienen derecho a seleccionar libremente su trabajo, lo que significa que las condiciones sociales o el género de una persona no deben ser los elementos que definan el empleo que puede desempeñar.',
+            'Los patronos, sean empresas privadas o el Gobierno, no pueden discriminar contra una persona que solicita empleo o un trabajador contratado por razón de edad, raza, color, sexo, origen social o nacional, condición social, ideas políticas o religiosas, por ser víctima o ser percibida como víctima de violencia doméstica, agresión sexual o acecho ni por su orientación sexual e identidad de género.',
+            'El derecho al trabajo asegura que las personas recibirán una paga digna por su labor.',
+            'Además, reconoce el derecho de los trabajadores y trabajadoras a organizarse sindicalmente y a defender sus intereses.',
+            'Los patronos deben garantizar que las personas trabajen en ambientes libres de discriminación, seguros y adecuados.'
+        ]
     },
     "Derecho a la dignidad": {
         "color": "#EBB5D6",  # Rosa pastel
         "video_url": "https://www.youtube.com/watch?v=yTGCsf9OpmA",
-        "pdf_file": "Dignidad.pdf"
+        "pdf_file": "Dignidad.pdf",
+        "descripcion": [
+            'La dignidad humana es el valor que tienen las personas por el simple hecho de ser personas.',
+            'Hay respeto a la dignidad cuando valoramos por igual a las personas, creando las condiciones para que éstas satisfagan sus necesidades básicas y se desarrollen plenamente como seres humanos.',
+            'El respeto a la dignidad humana es esencial para la convivencia en una sociedad democrática, participativa e igualitaria, donde los individuos y el Gobierno traten a las personas de manera justa.',
+            'La dignidad humana celebra la diversidad.',
+            'No hay respeto a la dignidad cuando se discrimina por edad, sexo, raza, condición social, nacionalidad, estado migratorio, orientación sexual, identidad de género, apariencia u otra condición.'
+        ]
     }
 }
 
@@ -161,6 +202,15 @@ def show():
             color: #050505;
         }}
 
+        /* Espacio entre párrafos (una línea en blanco, como en el texto original) */
+        .tarjeta-info-derecho .interior p {{
+            margin: 0 0 1em 0;
+        }}
+
+        .tarjeta-info-derecho .interior p:last-child {{
+            margin-bottom: 0;
+        }}
+
         @media (max-width: 768px) {{
             .header-pildora-derecho {{
                 padding: 10px 16px 10px 44px;
@@ -267,10 +317,13 @@ def show():
 
     # 5. Tarjeta de descripción (marco negro, interior blanco)
     if info.get("descripcion"):
+        parrafos_html = "".join(
+            f"<p>{html.escape(parrafo)}</p>" for parrafo in info["descripcion"]
+        )
         st.html(
             f"""
             <div class="tarjeta-info-derecho">
-                <div class="interior">{info["descripcion"]}</div>
+                <div class="interior">{parrafos_html}</div>
             </div>
             """
         )
