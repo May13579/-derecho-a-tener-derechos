@@ -224,6 +224,7 @@ def render_navbar():
                         ("Derechos", "seleccion"),
                         ("Actividad", "actividad"),
                         ("CPI", "cpi"),
+                        ("EA", "ea"),
                         ("Config", "configuracion"),
                     ]
 
