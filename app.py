@@ -5,6 +5,7 @@ import pages.seleccion as seleccion
 import pages.derechos as derechos
 import pages.actividad as actividad
 import pages.cpi as cpi
+import pages.ea as ea
 import pages.configuracion as configuracion
 
 # 1. st.set_page_config siempre debe ir primero
@@ -53,6 +54,8 @@ elif page == "actividad":
     actividad.show()
 elif page == "cpi":
     cpi.show()
+elif page == "ea":
+    ea.show()
 elif page == "configuracion":
     configuracion.show()
 
